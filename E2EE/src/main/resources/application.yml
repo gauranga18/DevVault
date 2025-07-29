@@ -3,6 +3,8 @@ server:
     include-message: always
     include-binding-errors: always
 spring:
+  profile:
+    active: dev
   datasource:
   password:
   url: jdbc:postgresql://localhost:5432/AuthData
