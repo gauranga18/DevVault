@@ -1,17 +1,22 @@
-package com.JPrjkt.E2EE;
+import lombok.Data;
 
-import com.fasterxml.jackson.annotation.JsonTypeId;
+@Data  // This generates getters, setters, toString, equals, hashCode
+@NoArgsConstructor // Default constructor
+@AllArgsConstructor // Constructor with all fields (optional, for testing or DTOs)
 
 @Entity
-@Table(name  = "users")
-
+@Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(streategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
-    @Column (unique = true)
+
+    @Column(unique = true)
     private String email;
+
     private String password;
+
     private String role = "USER";
 }
