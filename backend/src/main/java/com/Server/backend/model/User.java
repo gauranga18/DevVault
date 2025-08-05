@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    private boolean enbled;
+    private boolean enabled;
     @Column(name = "verification_code")
     private String verificationCode;
     @Column (name = "verification_expiration")
