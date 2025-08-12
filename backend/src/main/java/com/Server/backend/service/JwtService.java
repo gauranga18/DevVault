@@ -58,4 +58,7 @@ return Jwts
         .parseClaimsJws(token)
         .getBody();
 }
-}
+private Key getSignInKey(){
+    byte keyBytes[] = Decoders.BASE64.decode(secretKey);
+    return keys.hmacShaKeyFor(keyBytes);
+}}
