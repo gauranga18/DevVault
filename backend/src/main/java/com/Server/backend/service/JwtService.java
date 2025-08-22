@@ -21,7 +21,7 @@ public<T> T extractClaim(String token, Function<Claims, T> claimsResolver){
     final Claims claims = extractAllClaims(token);
     return claimsResolver.apply(claims);
 }
-public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+public String generateToken(UserDetails userDetails){
     return buildToken(extraClaims, userDetails, jwtExpiration);
 }
 public long getExpirationTime(){
