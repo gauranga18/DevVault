@@ -41,7 +41,7 @@ sendVerificationEmail(user);
 return userRepository.save(user);
 }
 public User authenticate(LoginUserDto input){
-User user = userRepository.findByEmail(input, getEmail())
+User user = userRepository.findByEmail(input.getEmail())
         .orElseThrow(()-> new RuntimeException("User Not Found"));
 if(!user.isEnabled()){
 throw new RuntimeException("Account Not Verified. Please verify your account");

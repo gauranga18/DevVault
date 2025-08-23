@@ -32,7 +32,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
     @PostMapping("/verify")
-    public ResponseEntity <?> verifyUser(@RequestBody VerifyUserDto){
+    public ResponseEntity <?> verifyUser(@RequestBody VerifyUserDto verifyUserDto){
         try{
             authenticationService.verifyUser(verifyUserDto);
             return ResponseEntity.ok("Account Verified successfully");

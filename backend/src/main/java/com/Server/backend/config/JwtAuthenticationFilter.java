@@ -19,11 +19,11 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFIlter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 private final HandlerExceptionResolver handlerExceptionResolver;
 private final JwtService jwtService;
 private final UserDetailsService userDetailsService;
-public JwtAuthenticationFIlter(
+public JwtAuthenticationFilter(
         JwtService jwtService,
         UserDetailsService userDetailsService,
         HandlerExceptionResolver handlerExceptionResolver){
