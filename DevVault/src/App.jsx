@@ -4,6 +4,7 @@ function App() {
 
   return (
     <>
+    This is the Home page 
        <Auth />
     </>
   )
