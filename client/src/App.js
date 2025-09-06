@@ -2,6 +2,7 @@ import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import Home from './components/Home';
 import Projects from './components/Projects';
+import Notes from './components/Notes';
 function App() {
   const {user , loginWithRedirect, isAuthenticated, logout, isLoading} = useAuth0();
   console.log(user);
@@ -14,7 +15,8 @@ if(isLoading) return <div>Loading...</div>
         }
       </header> */}
 {/* <Home/> */}
-<Projects/>
+{/* <Projects/> */}
+    <Notes/>
     </div>
   );
 }
