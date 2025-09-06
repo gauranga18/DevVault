@@ -13,8 +13,8 @@ if(isLoading) return <div>Loading...</div>
       isAuthenticated ? <button onClick={e=>logout()}>Logout</button> :  <button onClick={e=> loginWithRedirect()}>Login or Signup</button>
         }
       </header> */}
-<Home/>
-{/* <Projects/> */}
+{/* <Home/> */}
+<Projects/>
     </div>
   );
 }
