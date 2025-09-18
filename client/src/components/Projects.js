@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
+
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const projects = [
     { id: 1, name: 'Project 1', description: 'Description . . .' },
     { id: 2, name: 'Project 2', description: 'Description . . .' },
@@ -15,13 +16,16 @@ const Projects = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-     <Navbar/>
+      {/* Navbar */}
+      <Navbar />
 
-      {/* Main */}
-      <main className="px-4 py-6">
+      {/* Main Content */}
+      <main className="px-4 py-6 pt-24 max-w-4xl mx-auto">
+        {/* Added pt-24 to push below Navbar */}
+        {/* Added max-w-4xl mx-auto for centered alignment */}
+
         {/* Search + New */}
-        <div className="flex gap-2 sm:gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
           <input
             type="text"
             placeholder="Find a Project . . ."
@@ -34,12 +38,12 @@ const Projects = () => {
           </button>
         </div>
 
-        {/* Projects */}
+        {/* Projects List */}
         <div className="space-y-4">
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="border border-purple-500 rounded-md p-4 flex flex-col gap-3"
+              className="border border-purple-500 rounded-md p-4 flex flex-col gap-3 hover:border-purple-400 transition"
             >
               <div className="flex justify-between items-start">
                 <div>
@@ -57,8 +61,9 @@ const Projects = () => {
             </div>
           ))}
 
+          {/* Empty State */}
           {filteredProjects.length === 0 && (
-            <div className="text-center py-8">
+            <div className="text-center py-12 border border-dashed border-purple-600 rounded-lg">
               <p className="text-purple-300 text-sm sm:text-base">
                 {searchTerm ? 'No projects found.' : 'No projects yet.'}
               </p>
