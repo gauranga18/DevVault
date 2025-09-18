@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Projects from './Projects';
 const Home = () => {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white relative overflow-hidden">
@@ -86,9 +86,9 @@ const Home = () => {
         </div>
         
         {/* Get Started button */}
-        <button className="text-purple-400 text-2xl font-thin tracking-wider hover:text-purple-300 transition-colors duration-300 border border-purple-500 border-opacity-30 px-8 py-3 rounded hover:border-opacity-50">
+        <a href="/Projects" className="text-purple-400 text-2xl font-thin tracking-wider hover:text-purple-300 transition-colors duration-300 border border-purple-500 border-opacity-30 px-8 py-3 rounded hover:border-opacity-50">
           GET STARTED
-        </button>
+        </a>
       </div>
       
       {/* Additional subtle grid lines */}
