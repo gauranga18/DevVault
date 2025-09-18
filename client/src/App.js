@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Home from './components/Home';
 import Projects from './components/Projects';
 import Notes from './components/Notes';
+import Passwords from './components/Passwords';
 import { Routes, Route } from "react-router-dom";
 function App() {
   const {user , loginWithRedirect, isAuthenticated, logout, isLoading} = useAuth0();
@@ -23,6 +24,8 @@ if(isLoading) return <div>Loading...</div>
      <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/Projects" element={<Projects />} />
+      <Route path="/Passwords" element={<Passwords />} />
+      <Route path="/Notes" element={<Notes />} />
     </Routes>
     </div>
   );

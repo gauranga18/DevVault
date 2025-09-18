@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Navbar from './Navbar';
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -16,33 +16,7 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="border-b border-purple-500 px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Left side */}
-          <div className="flex items-center gap-6">
-            <h1 className="text-purple-500 text-xl sm:text-2xl font-thin tracking-widest">
-              DEV VAULT
-            </h1>
-            <nav className="flex gap-6">
-              <button className="text-purple-400 hover:text-purple-300 transition-colors text-sm sm:text-base">
-                NOTES
-              </button>
-              <button className="text-purple-400 hover:text-purple-300 transition-colors text-sm sm:text-base">
-                PASSWORDS
-              </button>
-            </nav>
-          </div>
-
-          {/* Right side (User Icon) */}
-          <button className="text-purple-500 hover:text-purple-400 transition-colors">
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
-                1.79-4 4 1.79 4 4 4zm0 2c-2.67 
-                0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-          </button>
-        </div>
-      </header>
+     <Navbar/>
 
       {/* Main */}
       <main className="px-4 py-6">

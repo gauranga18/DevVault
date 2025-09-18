@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from "./Navbar";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => (
   <aside
@@ -79,21 +80,26 @@ export default function Notes() {
   };
 
   return (
-    <div className="flex h-screen bg-black text-white">
-      {/* Sidebar */}
-      <Sidebar isOpen={isOpen} toggleSidebar={() => setIsOpen(!isOpen)} />
+    <>
+      <Navbar />
+      <div className="flex h-screen bg-black text-white pt-20"> 
+        {/* Added pt-20 to push below navbar */}
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 overflow-y-auto">
-        <NoteCard title="Docs" onClick={() => handleCardClick("Docs")} />
-        <NoteCard title="Ideas" onClick={() => handleCardClick("Ideas")} />
-        <NoteCard title="Snippets" onClick={() => handleCardClick("Snippets")} />
-        <NoteCard title="UI Notes" onClick={() => handleCardClick("UI Notes")} />
-        <NoteCard title="Backend Notes" onClick={() => handleCardClick("Backend Notes")} />
-        <NoteCard title="Random" onClick={() => handleCardClick("Random")} />
-        <NoteCard title="Meeting Notes" onClick={() => handleCardClick("Meeting Notes")} />
-        <NoteCard title="Tutorials" onClick={() => handleCardClick("Tutorials")} />
-      </main>
-    </div>
+        {/* Sidebar */}
+        <Sidebar isOpen={isOpen} toggleSidebar={() => setIsOpen(!isOpen)} />
+
+        {/* Main Content */}
+        <main className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 overflow-y-auto">
+          <NoteCard title="Docs" onClick={() => handleCardClick("Docs")} />
+          <NoteCard title="Ideas" onClick={() => handleCardClick("Ideas")} />
+          <NoteCard title="Snippets" onClick={() => handleCardClick("Snippets")} />
+          <NoteCard title="UI Notes" onClick={() => handleCardClick("UI Notes")} />
+          <NoteCard title="Backend Notes" onClick={() => handleCardClick("Backend Notes")} />
+          <NoteCard title="Random" onClick={() => handleCardClick("Random")} />
+          <NoteCard title="Meeting Notes" onClick={() => handleCardClick("Meeting Notes")} />
+          <NoteCard title="Tutorials" onClick={() => handleCardClick("Tutorials")} />
+        </main>
+      </div>
+    </>
   );
 }
