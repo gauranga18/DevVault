@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Projects from './components/Projects';
 import Notes from './components/Notes';
 import Passwords from './components/Passwords';
+import Profile from './components/Profile';
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/Projects" element={<Projects projects={projects} addProject={addProject} />} />
         <Route path="/Passwords" element={<Passwords />} />
         <Route path="/Notes" element={<Notes />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </div>
   );
