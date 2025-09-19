@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Plus, Copy, Eye, EyeOff, Shield, AlertTriangle, CheckCircle, Filter, Grid, List } from 'lucide-react';
+import Navbar from './Navbar';
 
 function Passwords() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -138,60 +139,16 @@ function Passwords() {
   return React.createElement('div', {
     className: "min-h-screen bg-black text-white"
   }, [
-    // Header
-    React.createElement('header', {
-      key: 'header',
-      className: "border-b border-purple-600 bg-black/50 backdrop-blur-sm sticky top-0 z-10"
-    }, 
-      React.createElement('div', {
-        className: "max-w-7xl mx-auto px-6 py-4"
-      },
-        React.createElement('div', {
-          className: "flex items-center justify-between"
-        }, [
-          React.createElement('h1', {
-            key: 'title',
-            className: "text-2xl font-bold text-purple-400"
-          }, 'DEV VAULT'),
-          React.createElement('div', {
-            key: 'header-actions',
-            className: "flex items-center gap-4"
-          }, [
-            React.createElement('div', {
-              key: 'search',
-              className: "relative"
-            }, [
-              React.createElement(Search, {
-                key: 'search-icon',
-                className: "absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400",
-                size: 20
-              }),
-              React.createElement('input', {
-                key: 'search-input',
-                type: "text",
-                placeholder: "Search passwords, websites...",
-                value: searchTerm,
-                onChange: (e) => setSearchTerm(e.target.value),
-                className: "pl-10 pr-4 py-2 bg-black border border-purple-600 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 w-80"
-              })
-            ]),
-            React.createElement('button', {
-              key: 'add-btn',
-              className: "p-2 bg-purple-600 rounded-lg hover:bg-purple-500 transition-colors"
-            }, React.createElement(Plus, { size: 20 })),
-            React.createElement('div', {
-              key: 'profile',
-              className: "w-8 h-8 bg-purple-600 rounded-full"
-            })
-          ])
-        ])
-      )
-    ),
-
-    // Main Content
+    React.createElement('div', {
+      key: 'navbar-wrapper',
+      className: "sticky top-0 z-50 bg-black border-b border-purple-600"
+    }, [
+      React.createElement(Navbar, { key: 'navbar' })
+    ]),
+    // Main Content with proper top padding
     React.createElement('div', {
       key: 'main',
-      className: "max-w-7xl mx-auto px-6 py-6"
+      className: "max-w-7xl mx-auto px-6 py-6 pt-20"
     }, [
       // Stats Cards
       React.createElement('div', {
@@ -298,11 +255,11 @@ function Passwords() {
       // Filters and View Toggle
       React.createElement('div', {
         key: 'controls',
-        className: "flex items-center justify-between mb-6"
+        className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6"
       }, [
         React.createElement('div', {
           key: 'categories',
-          className: "flex items-center gap-2"
+          className: "flex flex-wrap items-center gap-2"
         }, [
           ...categories.map(category => 
             React.createElement('button', {
@@ -404,7 +361,7 @@ function Passwords() {
                   }, [
                     React.createElement('span', {
                       key: 'username',
-                      className: "text-sm text-white"
+                      className: "text-sm text-white truncate max-w-32"
                     }, password.username),
                     React.createElement('button', {
                       key: 'copy-username',
@@ -453,72 +410,82 @@ function Passwords() {
             key: 'list-view',
             className: "bg-black border border-purple-600 rounded-lg overflow-hidden"
           }, 
-            React.createElement('table', {
-              className: "w-full"
-            }, [
-              React.createElement('thead', {
-                key: 'table-head',
-                className: "bg-purple-600/10 border-b border-purple-600"
-              },
-                React.createElement('tr', {}, [
-                  React.createElement('th', { key: 'th-website', className: "text-left p-4 text-purple-400" }, 'Website'),
-                  React.createElement('th', { key: 'th-username', className: "text-left p-4 text-purple-400" }, 'Username'),
-                  React.createElement('th', { key: 'th-strength', className: "text-left p-4 text-purple-400" }, 'Strength'),
-                  React.createElement('th', { key: 'th-lastused', className: "text-left p-4 text-purple-400" }, 'Last Used'),
-                  React.createElement('th', { key: 'th-actions', className: "text-left p-4 text-purple-400" }, 'Actions')
-                ])
-              ),
-              React.createElement('tbody', {
-                key: 'table-body'
-              },
-                filteredPasswords.map(password =>
-                  React.createElement('tr', {
-                    key: password.id,
-                    className: "border-b border-purple-600/30 hover:bg-purple-600/5"
-                  }, [
-                    React.createElement('td', { key: 'td-website', className: "p-4" },
-                      React.createElement('div', {
-                        className: "flex items-center gap-3"
-                      }, [
-                        React.createElement('span', { key: 'favicon', className: "text-xl" }, password.favicon),
-                        React.createElement('div', { key: 'site-info' }, [
-                          React.createElement('div', { key: 'website', className: "font-medium text-white" }, password.website),
-                          React.createElement('div', { key: 'url', className: "text-sm text-purple-300" }, password.url)
-                        ])
-                      ])
-                    ),
-                    React.createElement('td', { key: 'td-username', className: "p-4 text-white" }, password.username),
-                    React.createElement('td', { key: 'td-strength', className: "p-4" },
-                      React.createElement('div', {
-                        className: `px-2 py-1 rounded-full text-xs flex items-center gap-1 w-fit ${getStrengthColor(password.strength)}`
-                      }, [
-                        getStrengthIcon(password.strength),
-                        password.strength
-                      ])
-                    ),
-                    React.createElement('td', { key: 'td-lastused', className: "p-4 text-purple-300" }, password.lastUsed),
-                    React.createElement('td', { key: 'td-actions', className: "p-4" },
-                      React.createElement('div', {
-                        className: "flex items-center gap-2"
-                      }, [
-                        React.createElement('button', {
-                          key: 'copy-username-btn',
-                          onClick: () => copyToClipboard(password.username),
-                          className: "text-purple-400 hover:text-white transition-colors",
-                          title: "Copy username"
-                        }, React.createElement(Copy, { size: 16 })),
-                        React.createElement('button', {
-                          key: 'toggle-password-btn',
-                          onClick: () => togglePasswordVisibility(password.id),
-                          className: "text-purple-400 hover:text-white transition-colors",
-                          title: "Toggle password"
-                        }, showPassword[password.id] ? React.createElement(EyeOff, { size: 16 }) : React.createElement(Eye, { size: 16 }))
-                      ])
-                    )
+            React.createElement('div', {
+              className: "overflow-x-auto"
+            },
+              React.createElement('table', {
+                className: "w-full min-w-[800px]"
+              }, [
+                React.createElement('thead', {
+                  key: 'table-head',
+                  className: "bg-purple-600/10 border-b border-purple-600"
+                },
+                  React.createElement('tr', {}, [
+                    React.createElement('th', { key: 'th-website', className: "text-left p-4 text-purple-400" }, 'Website'),
+                    React.createElement('th', { key: 'th-username', className: "text-left p-4 text-purple-400" }, 'Username'),
+                    React.createElement('th', { key: 'th-strength', className: "text-left p-4 text-purple-400" }, 'Strength'),
+                    React.createElement('th', { key: 'th-lastused', className: "text-left p-4 text-purple-400" }, 'Last Used'),
+                    React.createElement('th', { key: 'th-actions', className: "text-left p-4 text-purple-400" }, 'Actions')
                   ])
+                ),
+                React.createElement('tbody', {
+                  key: 'table-body'
+                },
+                  filteredPasswords.map(password =>
+                    React.createElement('tr', {
+                      key: password.id,
+                      className: "border-b border-purple-600/30 hover:bg-purple-600/5"
+                    }, [
+                      React.createElement('td', { key: 'td-website', className: "p-4" },
+                        React.createElement('div', {
+                          className: "flex items-center gap-3"
+                        }, [
+                          React.createElement('span', { key: 'favicon', className: "text-xl" }, password.favicon),
+                          React.createElement('div', { key: 'site-info' }, [
+                            React.createElement('div', { key: 'website', className: "font-medium text-white" }, password.website),
+                            React.createElement('div', { key: 'url', className: "text-sm text-purple-300" }, password.url)
+                          ])
+                        ])
+                      ),
+                      React.createElement('td', { key: 'td-username', className: "p-4 text-white" }, password.username),
+                      React.createElement('td', { key: 'td-strength', className: "p-4" },
+                        React.createElement('div', {
+                          className: `px-2 py-1 rounded-full text-xs flex items-center gap-1 w-fit ${getStrengthColor(password.strength)}`
+                        }, [
+                          getStrengthIcon(password.strength),
+                          password.strength
+                        ])
+                      ),
+                      React.createElement('td', { key: 'td-lastused', className: "p-4 text-purple-300" }, password.lastUsed),
+                      React.createElement('td', { key: 'td-actions', className: "p-4" },
+                        React.createElement('div', {
+                          className: "flex items-center gap-2"
+                        }, [
+                          React.createElement('button', {
+                            key: 'copy-username-btn',
+                            onClick: () => copyToClipboard(password.username),
+                            className: "text-purple-400 hover:text-white transition-colors",
+                            title: "Copy username"
+                          }, React.createElement(Copy, { size: 16 })),
+                          React.createElement('button', {
+                            key: 'toggle-password-btn',
+                            onClick: () => togglePasswordVisibility(password.id),
+                            className: "text-purple-400 hover:text-white transition-colors",
+                            title: "Show password"
+                          }, showPassword[password.id] ? React.createElement(EyeOff, { size: 16 }) : React.createElement(Eye, { size: 16 })),
+                          React.createElement('button', {
+                            key: 'copy-password-btn',
+                            onClick: () => copyToClipboard(password.password),
+                            className: "text-purple-400 hover:text-white transition-colors",
+                            title: "Copy password"
+                          }, React.createElement(Copy, { size: 16 }))
+                        ])
+                      )
+                    ])
+                  )
                 )
-              )
-            ])
+              ])
+            )
           )
     ])
   ]);
