@@ -5,28 +5,44 @@ import Projects from './components/Projects';
 import Notes from './components/Notes';
 import Passwords from './components/Passwords';
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
+
 function App() {
-  const {user , loginWithRedirect, isAuthenticated, logout, isLoading} = useAuth0();
+  const [projects, setProjects] = useState([
+    { id: 1, name: 'Project 1', description: 'Sample project' },
+  ]);
+
+  // Function to add a new project
+  const addProject = (project) => {
+    setProjects([...projects, { id: Date.now(), ...project }]);
+  };
+
+  const { user, loginWithRedirect, isAuthenticated, logout, isLoading } = useAuth0();
   console.log(user);
-if(isLoading) return <div>Loading...</div>
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <h3>Hello, {user?.name || "Guest"}</h3>{
-      isAuthenticated ? <button onClick={e=>logout()}>Logout</button> :  <button onClick={e=> loginWithRedirect()}>Login or Signup</button>
-        }
-      </header> */}
-{/* <Home/> */}
-{/* <Projects/> */}
-    {/* <Notes/> */}
+      {/* Example Auth0 header (optional) */}
+      {/* 
+      <header className="App-header">
+        <h3>Hello, {user?.name || "Guest"}</h3>
+        {isAuthenticated ? (
+          <button onClick={() => logout()}>Logout</button>
+        ) : (
+          <button onClick={() => loginWithRedirect()}>Login or Signup</button>
+        )}
+      </header>
+      */}
 
-
-     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/Projects" element={<Projects />} />
-      <Route path="/Passwords" element={<Passwords />} />
-      <Route path="/Notes" element={<Notes />} />
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* ✅ Pass state + function to Projects */}
+        <Route path="/Projects" element={<Projects projects={projects} addProject={addProject} />} />
+        <Route path="/Passwords" element={<Passwords />} />
+        <Route path="/Notes" element={<Notes />} />
+      </Routes>
     </div>
   );
 }

@@ -1,71 +1,67 @@
 import React, { useState, useRef } from 'react';
-import Navbar from './Navbar'; // Assuming this is your Navbar component
+import Navbar from './Navbar';
 
-const Projects = ({ projects = [] }) => {
+const Projects = ({ projects = [], addProject }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [open, setOpen] = useState(false); // dropdown state
-  const fileInputRef = useRef(null); // reference for hidden file input
+  const [open, setOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false); // modal state
+  const [newProject, setNewProject] = useState({ name: '', description: '' });
 
-  // Filter projects based on the search term
+  const fileInputRef = useRef(null);
+
   const filteredProjects = projects.filter((project) =>
     project.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle file selection
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log("Selected file:", file.name);
-      // TODO: upload file to Firebase Storage
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!newProject.name.trim()) return;
+    addProject(newProject);
+    setNewProject({ name: '', description: '' });
+    setShowModal(false);
   };
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navbar */}
       <Navbar />
 
-      {/* Main Content */}
       <main className="px-4 py-6 pt-24 max-w-4xl mx-auto">
-        {/* Search + New Section */}
+        {/* Search + New */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 relative">
           <input
             type="text"
             placeholder="Find a Project . . ."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 bg-transparent border border-purple-500 rounded-md px-3 py-2 text-sm sm:text-base placeholder-purple-300 focus:outline-none focus:border-purple-400"
+            className="flex-1 bg-transparent border border-purple-500 rounded-md px-3 py-2"
           />
 
-          {/* Dropdown Button */}
-          <div className="relative inline-block text-left">
+          <div className="relative">
             <button
               onClick={() => setOpen(!open)}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 sm:px-6 py-2 rounded-md font-medium transition-colors text-sm sm:text-base"
+              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-md"
             >
               NEW
             </button>
 
-            {/* Dropdown options */}
             {open && (
               <div className="absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-black border border-purple-600 z-10">
                 <div className="py-1 flex flex-col">
                   <button
                     onClick={() => {
                       setOpen(false);
-                      // TODO: open create project modal
-                      console.log("Create New project clicked");
+                      setShowModal(true);
                     }}
-                    className="px-4 py-2 text-left text-sm text-purple-300 hover:bg-purple-700 hover:text-white transition-colors"
+                    className="px-4 py-2 text-left text-sm text-purple-300 hover:bg-purple-700"
                   >
                     Create New
                   </button>
                   <button
                     onClick={() => {
                       setOpen(false);
-                      fileInputRef.current.click(); // trigger hidden file input
+                      fileInputRef.current.click();
                     }}
-                    className="px-4 py-2 text-left text-sm text-purple-300 hover:bg-purple-700 hover:text-white transition-colors"
+                    className="px-4 py-2 text-left text-sm text-purple-300 hover:bg-purple-700"
                   >
                     Import from PC
                   </button>
@@ -74,47 +70,82 @@ const Projects = ({ projects = [] }) => {
             )}
           </div>
 
-          {/* Hidden file input */}
           <input
             type="file"
             ref={fileInputRef}
-            onChange={handleFileChange}
             className="hidden"
-            accept=".zip,.rar,.7z,.json,.txt" // adjust allowed file types
+            accept=".zip,.rar,.7z,.json,.txt"
           />
         </div>
 
-        {/* Dynamic Projects List or Empty State */}
+        {/* Project List */}
         <div className="space-y-4">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="border border-purple-500 rounded-md p-4 flex flex-col gap-3 hover:border-purple-400 transition"
+                className="border border-purple-500 rounded-md p-4 flex justify-between"
               >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-purple-400 text-base sm:text-lg font-medium">
-                      {project.name}
-                    </h2>
-                    <p className="text-purple-300 text-sm sm:text-base">
-                      {project.description}
-                    </p>
-                  </div>
-                  <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 sm:py-2 rounded-md font-medium transition-colors text-sm sm:text-base">
-                    EDIT
-                  </button>
+                <div>
+                  <h2 className="text-purple-400">{project.name}</h2>
+                  <p className="text-purple-300">{project.description}</p>
                 </div>
+                <button className="bg-purple-600 px-4 py-2 rounded-md">
+                  EDIT
+                </button>
               </div>
             ))
           ) : (
             <div className="text-center py-12 border border-dashed border-purple-600 rounded-lg">
-              <p className="text-purple-300 text-sm sm:text-base">
+              <p className="text-purple-300">
                 {searchTerm ? 'No projects found.' : 'No projects yet.'}
               </p>
             </div>
           )}
         </div>
+
+        {/* Create Project Modal */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-20">
+            <div className="bg-gray-900 border border-purple-500 p-6 rounded-lg w-96">
+              <h2 className="text-lg text-purple-400 mb-4">Create New Project</h2>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Project Name"
+                  value={newProject.name}
+                  onChange={(e) =>
+                    setNewProject({ ...newProject, name: e.target.value })
+                  }
+                  className="w-full bg-transparent border border-purple-500 rounded-md px-3 py-2"
+                />
+                <textarea
+                  placeholder="Project Description"
+                  value={newProject.description}
+                  onChange={(e) =>
+                    setNewProject({ ...newProject, description: e.target.value })
+                  }
+                  className="w-full bg-transparent border border-purple-500 rounded-md px-3 py-2"
+                />
+                <div className="flex justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 border border-purple-400 text-purple-300 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md"
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
