@@ -50,12 +50,7 @@ const Sidebar = ({ isOpen, toggleSidebar, categories, onCategorySelect, activeCa
       </nav>
     </div>
 
-    {/* Add Button */}
-    <div className="flex justify-center">
-      <button className="w-12 h-12 rounded-full border-2 border-purple-600 text-purple-400 flex items-center justify-center hover:bg-purple-600 hover:text-black transition-transform duration-300 hover:scale-110">
-        +
-      </button>
-    </div>
+    
   </aside>
 );
 
