@@ -38,7 +38,6 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* ✅ Pass state + function to Projects */}
         <Route path="/Projects" element={<Projects projects={projects} addProject={addProject} />} />
         <Route path="/Passwords" element={<Passwords />} />
         <Route path="/Notes" element={<Notes />} />

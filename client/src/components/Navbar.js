@@ -25,6 +25,12 @@ const Navbar = () => {
             >
               PASSWORDS
             </Link>
+            <Link
+              to="/Projects"
+              className="text-purple-400 hover:text-purple-300 transition-colors text-sm sm:text-base"
+            >
+              PROJECTS
+            </Link>
           </nav>
         </div>
 
