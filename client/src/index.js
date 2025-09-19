@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
-import { BrowserRouter as Router } from 'react-router-dom'; // ✅ import Router
+import { BrowserRouter as Router } from 'react-router-dom'; // import Router
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +16,7 @@ root.render(
         redirect_uri: window.location.origin
       }}
     >
-      {/* ✅ Wrap App inside Router */}
+      {/* Wrap App inside Router */}
       <Router>
         <App />
       </Router>
