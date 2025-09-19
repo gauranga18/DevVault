@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
+import Navbar from './Navbar'; // Assuming this is your Navbar component
 
-const Projects = () => {
+const Projects = ({ projects = [] }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const projects = [
-    { id: 1, name: 'Project 1', description: 'Description . . .' },
-    { id: 2, name: 'Project 2', description: 'Description . . .' },
-    { id: 3, name: 'Project 3', description: 'Description . . .' }
-  ];
-
+  // Filter projects based on the search term
   const filteredProjects = projects.filter(project =>
     project.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -21,10 +16,7 @@ const Projects = () => {
 
       {/* Main Content */}
       <main className="px-4 py-6 pt-24 max-w-4xl mx-auto">
-        {/* Added pt-24 to push below Navbar */}
-        {/* Added max-w-4xl mx-auto for centered alignment */}
-
-        {/* Search + New */}
+        {/* Search + New Section */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
           <input
             type="text"
@@ -38,31 +30,32 @@ const Projects = () => {
           </button>
         </div>
 
-        {/* Projects List */}
+        {/* Dynamic Projects List or Empty State */}
         <div className="space-y-4">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className="border border-purple-500 rounded-md p-4 flex flex-col gap-3 hover:border-purple-400 transition"
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <h2 className="text-purple-400 text-base sm:text-lg font-medium">
-                    {project.name}
-                  </h2>
-                  <p className="text-purple-300 text-sm sm:text-base">
-                    {project.description}
-                  </p>
+          {filteredProjects.length > 0 ? (
+            // If there are filtered projects, map over and display them
+            filteredProjects.map((project) => (
+              <div
+                key={project.id}
+                className="border border-purple-500 rounded-md p-4 flex flex-col gap-3 hover:border-purple-400 transition"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h2 className="text-purple-400 text-base sm:text-lg font-medium">
+                      {project.name}
+                    </h2>
+                    <p className="text-purple-300 text-sm sm:text-base">
+                      {project.description}
+                    </p>
+                  </div>
+                  <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 sm:py-2 rounded-md font-medium transition-colors text-sm sm:text-base">
+                    EDIT
+                  </button>
                 </div>
-                <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 sm:py-2 rounded-md font-medium transition-colors text-sm sm:text-base">
-                  EDIT
-                </button>
               </div>
-            </div>
-          ))}
-
-          {/* Empty State */}
-          {filteredProjects.length === 0 && (
+            ))
+          ) : (
+            // If no projects match the search or the initial list is empty, show the message
             <div className="text-center py-12 border border-dashed border-purple-600 rounded-lg">
               <p className="text-purple-300 text-sm sm:text-base">
                 {searchTerm ? 'No projects found.' : 'No projects yet.'}
