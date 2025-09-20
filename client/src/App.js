@@ -5,8 +5,27 @@ import Projects from './components/Projects';
 import Notes from './components/Notes';
 import Passwords from './components/Passwords';
 import Profile from './components/Profile';
-import { Routes, Route } from "react-router-dom";
+import Login from './components/Login'; // Create this component
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth0();
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
 
 function App() {
   const [projects, setProjects] = useState([
@@ -18,31 +37,72 @@ function App() {
     setProjects([...projects, { id: Date.now(), ...project }]);
   };
 
-  const { user, loginWithRedirect, isAuthenticated, logout, isLoading } = useAuth0();
-  console.log(user);
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  
+  console.log('Current user:', user);
+  console.log('Is authenticated:', isAuthenticated);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
-      {/* Example Auth0 header (optional) */}
-      {/* 
-      <header className="App-header">
-        <h3>Hello, {user?.name || "Guest"}</h3>
-        {isAuthenticated ? (
-          <button onClick={() => logout()}>Logout</button>
-        ) : (
-          <button onClick={() => loginWithRedirect()}>Login or Signup</button>
-        )}
-      </header>
-      */}
-
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Projects" element={<Projects projects={projects} addProject={addProject} />} />
-        <Route path="/Passwords" element={<Passwords />} />
-        <Route path="/Notes" element={<Notes />} />
-        <Route path="/Profile" element={<Profile />} />
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        
+        {/* Protected Routes */}
+        <Route 
+          path="/" 
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/projects" 
+          element={
+            <ProtectedRoute>
+              <Projects projects={projects} addProject={addProject} />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/passwords" 
+          element={
+            <ProtectedRoute>
+              <Passwords />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/notes" 
+          element={
+            <ProtectedRoute>
+              <Notes />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Redirect unknown routes */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );
