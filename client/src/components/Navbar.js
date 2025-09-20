@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="absolute top-0 left-0 w-full z-50 bg-transparent border-b border-purple-500 px-4 py-4">
       <div className="flex items-center justify-between">
@@ -35,7 +37,10 @@ const Navbar = () => {
         </div>
 
         {/* Right side (User Icon) */}
-        <button className="text-purple-500 hover:text-purple-400 transition-colors">
+        <button 
+          onClick={() => navigate('/Profile')}
+          className="text-purple-500 hover:text-purple-400 transition-colors"
+        >
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
             <path
               d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
