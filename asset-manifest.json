@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/DevVault/static/css/main.f548c0a8.css",
+    "main.js": "/DevVault/static/js/main.950df4bd.js",
+    "static/js/453.a3c1d153.chunk.js": "/DevVault/static/js/453.a3c1d153.chunk.js",
+    "index.html": "/DevVault/index.html",
+    "main.f548c0a8.css.map": "/DevVault/static/css/main.f548c0a8.css.map",
+    "main.950df4bd.js.map": "/DevVault/static/js/main.950df4bd.js.map",
+    "453.a3c1d153.chunk.js.map": "/DevVault/static/js/453.a3c1d153.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f548c0a8.css",
+    "static/js/main.950df4bd.js"
+  ]
+}
