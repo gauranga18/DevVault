@@ -38,9 +38,9 @@ const Home = () => {
                 style={{ transform: 'translateZ(12px)' }}
               >
                 {/* Arrow pointing right */}
-                <svg className="w-8 h-8 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+                {/* <svg className="w-8 h-8 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg>
+                </svg> */}
               </div>
               
               {/* Back face */}
