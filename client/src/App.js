@@ -5,7 +5,9 @@ import Projects from './components/Projects';
 import Notes from './components/Notes';
 import Passwords from './components/Passwords';
 import Profile from './components/Profile';
-import Login from './components/Login'; // Create this component
+import Login from './components/Login'; 
+import PrivateRoute from './components/PrivateRoute';
+import EditProjectModal from './components/EditProjectModal';
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -32,15 +34,20 @@ function App() {
     { id: 1, name: 'Project 1', description: 'Sample project' },
   ]);
 
-  // Function to add a new project
+  const [editingProject, setEditingProject] = useState(null);
+
+  // Add new project
   const addProject = (project) => {
     setProjects([...projects, { id: Date.now(), ...project }]);
   };
 
+  // Update an existing project
+  const updateProject = (updatedProject) => {
+    setProjects(projects.map(p => p.id === updatedProject.id ? updatedProject : p));
+    setEditingProject(null);
+  };
+
   const { user, isAuthenticated, isLoading } = useAuth0();
-  
-  console.log('Current user:', user);
-  console.log('Is authenticated:', isAuthenticated);
 
   if (isLoading) {
     return (
@@ -56,23 +63,34 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        {/* Public Routes */}
+        {/* Public Route */}
         <Route path="/login" element={<Login />} />
         
         {/* Protected Routes */}
         <Route 
           path="/" 
           element={
-            <ProtectedRoute>
+            <PrivateRoute>
               <Home />
-            </ProtectedRoute>
+            </PrivateRoute>
           } 
         />
         <Route 
           path="/projects" 
           element={
             <ProtectedRoute>
-              <Projects projects={projects} addProject={addProject} />
+              <Projects 
+                projects={projects} 
+                addProject={addProject} 
+                onEdit={setEditingProject}
+              />
+              {editingProject && (
+                <EditProjectModal 
+                  project={editingProject} 
+                  onSave={updateProject} 
+                  onClose={() => setEditingProject(null)} 
+                />
+              )}
             </ProtectedRoute>
           } 
         />
@@ -100,7 +118,7 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        
+
         {/* Redirect unknown routes */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

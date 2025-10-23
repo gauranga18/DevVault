@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FileText, Lightbulb, Scissors, Palette, Settings, Dice6, Menu, X, Edit2, Trash2 } from "lucide-react";
 import Navbar from "./Navbar";
 
 const Sidebar = ({ isOpen, toggleSidebar, categories, onCategorySelect, activeCategory }) => (
@@ -11,9 +12,9 @@ const Sidebar = ({ isOpen, toggleSidebar, categories, onCategorySelect, activeCa
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="text-purple-400 hover:text-white mb-4 text-xl w-full flex justify-center"
+        className="text-purple-400 hover:text-white mb-4 w-full flex justify-center"
       >
-        {isOpen ? "×" : "≡"}
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
       {/* Search (only visible when open) */}
@@ -33,7 +34,14 @@ const Sidebar = ({ isOpen, toggleSidebar, categories, onCategorySelect, activeCa
             activeCategory === 'all' ? 'bg-purple-600 text-white' : ''
           }`}
         >
-          {isOpen ? "All Notes" : "📄"}
+          {isOpen ? (
+            <>
+              <FileText size={18} className="mr-2" />
+              <span>All Notes</span>
+            </>
+          ) : (
+            <FileText size={18} />
+          )}
         </button>
         
         {categories.map((category) => (
@@ -44,13 +52,18 @@ const Sidebar = ({ isOpen, toggleSidebar, categories, onCategorySelect, activeCa
               activeCategory === category.id ? 'bg-purple-600 text-white' : ''
             }`}
           >
-            {isOpen ? category.name : category.icon}
+            {isOpen ? (
+              <>
+                {category.icon}
+                <span className="ml-2">{category.name}</span>
+              </>
+            ) : (
+              category.icon
+            )}
           </button>
         ))}
       </nav>
     </div>
-
-    
   </aside>
 );
 
@@ -65,24 +78,24 @@ const NoteCard = ({ note, onClick, onEdit, onDelete }) => (
       className="relative w-full h-full bg-black border border-purple-600 rounded-2xl flex flex-col justify-between transition-colors duration-300 group-hover:border-purple-400 group-hover:shadow-lg group-hover:shadow-purple-600/40 p-4"
     >
       {/* Card actions */}
-      <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={(e) => {
             e.stopPropagation();
             onEdit(note);
           }}
-          className="text-xs text-purple-400 hover:text-white"
+          className="text-purple-400 hover:text-white"
         >
-          ✏️
+          <Edit2 size={16} />
         </button>
         <button
           onClick={(e) => {
             e.stopPropagation();
             onDelete(note.id);
           }}
-          className="text-xs text-purple-400 hover:text-red-400"
+          className="text-purple-400 hover:text-red-400"
         >
-          🗑️
+          <Trash2 size={16} />
         </button>
       </div>
 
@@ -179,7 +192,7 @@ const NoteModal = ({ note, isOpen, onClose, onSave }) => {
             {note ? 'Edit Note' : 'New Note'}
           </h2>
           <button onClick={onClose} className="text-purple-400 hover:text-white">
-            ×
+            <X size={24} />
           </button>
         </div>
         
@@ -243,26 +256,22 @@ export default function Notes() {
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, noteId: null });
 
   const categories = [
-    { id: 'docs', name: 'Docs', icon: '📄' },
-    { id: 'ideas', name: 'Ideas', icon: '💡' },
-    { id: 'snippets', name: 'Snippets', icon: '✂️' },
-    { id: 'ui', name: 'UI Notes', icon: '🎨' },
-    { id: 'backend', name: 'Backend Notes', icon: '⚙️' },
-    { id: 'random', name: 'Random', icon: '🎲' },
+    { id: 'docs', name: 'Docs', icon: <FileText size={18} /> },
+    { id: 'ideas', name: 'Ideas', icon: <Lightbulb size={18} /> },
+    { id: 'snippets', name: 'Snippets', icon: <Scissors size={18} /> },
+    { id: 'ui', name: 'UI Notes', icon: <Palette size={18} /> },
+    { id: 'backend', name: 'Backend Notes', icon: <Settings size={18} /> },
+    { id: 'random', name: 'Random', icon: <Dice6 size={18} /> },
   ];
 
-  // Load notes from localStorage on component mount
+  // Load notes from memory on component mount
   useEffect(() => {
-    const savedNotes = localStorage.getItem('notes-app-data');
-    if (savedNotes) {
-      const parsed = JSON.parse(savedNotes);
-      setNotes(parsed);
-    }
+    const initialNotes = [];
+    setNotes(initialNotes);
   }, []);
 
-  // Save notes to localStorage whenever notes change
+  // Filter notes whenever notes or activeCategory changes
   useEffect(() => {
-    localStorage.setItem('notes-app-data', JSON.stringify(notes));
     filterNotes();
   }, [notes, activeCategory]);
 

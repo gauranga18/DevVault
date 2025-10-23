@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import Navbar from './Navbar';
 
-const Projects = ({ projects = [], addProject }) => {
+const Projects = ({ projects = [], addProject, onEdit }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false); // modal state
+  const [showModal, setShowModal] = useState(false);
   const [newProject, setNewProject] = useState({ name: '', description: '' });
 
   const fileInputRef = useRef(null);
@@ -16,7 +16,15 @@ const Projects = ({ projects = [], addProject }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!newProject.name.trim()) return;
-    addProject(newProject);
+    
+    // Create a complete project object with ID
+    const projectToAdd = {
+      id: Date.now().toString(), // Generate unique ID
+      name: newProject.name,
+      description: newProject.description
+    };
+    
+    addProject(projectToAdd);
     setNewProject({ name: '', description: '' });
     setShowModal(false);
   };
@@ -59,7 +67,7 @@ const Projects = ({ projects = [], addProject }) => {
                   <button
                     onClick={() => {
                       setOpen(false);
-                      fileInputRef.current.click();
+                      fileInputRef.current?.click();
                     }}
                     className="px-4 py-2 text-left text-sm text-purple-300 hover:bg-purple-700"
                   >
@@ -90,7 +98,10 @@ const Projects = ({ projects = [], addProject }) => {
                   <h2 className="text-purple-400">{project.name}</h2>
                   <p className="text-purple-300">{project.description}</p>
                 </div>
-                <button className="bg-purple-600 px-4 py-2 rounded-md">
+                <button
+                  onClick={() => onEdit && onEdit(project)}
+                  className="bg-purple-600 px-4 py-2 rounded-md hover:bg-purple-700 transition"
+                >
                   EDIT
                 </button>
               </div>
@@ -118,6 +129,7 @@ const Projects = ({ projects = [], addProject }) => {
                     setNewProject({ ...newProject, name: e.target.value })
                   }
                   className="w-full bg-transparent border border-purple-500 rounded-md px-3 py-2"
+                  required
                 />
                 <textarea
                   placeholder="Project Description"

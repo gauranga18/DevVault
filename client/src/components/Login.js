@@ -1,14 +1,19 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { LogIn, Shield, Code, Database } from 'lucide-react';
 
 const Login = () => {
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
-  // If already authenticated, redirect to home
+  // Show nothing while Auth0 is loading
+  if (isLoading) return null;
+
+  // If already authenticated, redirect to the page user came from
   if (isAuthenticated) {
-    window.location.href = '/';
-    return null;
+    return <Navigate to={from} replace />;
   }
 
   return (
@@ -44,7 +49,7 @@ const Login = () => {
           </div>
 
           <button
-            onClick={() => loginWithRedirect()}
+            onClick={() => loginWithRedirect({ appState: { returnTo: from } })}
             className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-purple-700 transition-all duration-200 shadow-md shadow-purple-500/30 flex items-center justify-center"
           >
             <LogIn className="w-4 h-4 mr-2" />

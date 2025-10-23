@@ -1,5 +1,6 @@
 import React from 'react';
-import Projects from './Projects';
+import { Link } from 'react-router-dom';
+import Projects from './Projects'
 const Home = () => {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white relative overflow-hidden">
@@ -26,7 +27,7 @@ const Home = () => {
           <div className="relative w-32 h-32 cursor-pointer group" style={{ perspective: '200px' }}>
             {/* 3D Cube */}
             <div 
-              className="w-24 h-24 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 group-hover:rotate-y-12 group-hover:rotate-x-12"
+              className="w-24 h-24 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-300"
               style={{ 
                 transformStyle: 'preserve-3d',
                 transform: 'translate(-50%, -50%) rotateX(-15deg) rotateY(25deg)'
@@ -38,9 +39,9 @@ const Home = () => {
                 style={{ transform: 'translateZ(12px)' }}
               >
                 {/* Arrow pointing right */}
-                {/* <svg className="w-8 h-8 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg> */}
+                </svg>
               </div>
               
               {/* Back face */}
@@ -74,21 +75,21 @@ const Home = () => {
               ></div>
             </div>
             
-            {/* Glow effect */}
-            <div className="absolute inset-0 rounded-lg bg-purple-500 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-300"></div>
-            
-            {/* Corner accent lines */}
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-purple-500"></div>
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-purple-500"></div>
-            <div className="absolute left-2 top-1/2 transform -translate-y-1/2 w-0.5 h-6 bg-purple-500"></div>
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-0.5 h-6 bg-purple-500"></div>
+            {/* Glow effect and hover animation */}
+            <div 
+              className="absolute inset-0 rounded-lg bg-purple-500 opacity-20 blur-xl group-hover:opacity-30 transition-all duration-300"
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: 'translate(-50%, -50%) rotateX(-15deg) rotateY(25deg)',
+              }}
+            ></div>
           </div>
         </div>
         
         {/* Get Started button */}
-        <a href="/Projects" className="text-purple-400 text-2xl font-thin tracking-wider hover:text-purple-300 transition-colors duration-300 border border-purple-500 border-opacity-30 px-8 py-3 rounded hover:border-opacity-50">
+        <Link to="/projects" className="text-purple-400 text-2xl font-thin tracking-wider hover:text-purple-300 transition-colors duration-300 border border-purple-500 border-opacity-30 px-8 py-3 rounded hover:border-opacity-50">
           GET STARTED
-        </a>
+        </Link>
       </div>
       
       {/* Additional subtle grid lines */}
