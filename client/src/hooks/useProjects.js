@@ -1,54 +1,38 @@
+// hooks/useProjects.js
 import { useState, useEffect } from 'react';
-import { useAuth0 } from "@auth0/auth0-react";
-import { 
-  createProject, 
-  getUserProjects, 
-  updateProject, 
-  deleteProject 
-} from '../firebase/projectsService';
 
 export const useProjects = () => {
-  const { user, isAuthenticated } = useAuth0();
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Load projects from localStorage on mount
   useEffect(() => {
-    if (isAuthenticated) loadProjects();
-    else {
-      setProjects([]);
-      setLoading(false);
+    const savedProjects = localStorage.getItem('projects');
+    if (savedProjects) {
+      setProjects(JSON.parse(savedProjects));
     }
-  }, [isAuthenticated]);
+  }, []);
 
-  const loadProjects = async () => {
-    try {
-      setLoading(true);
-      const userProjects = await getUserProjects(user.sub);
-      setProjects(userProjects);
-      setError(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  // Save to localStorage whenever projects change
+  useEffect(() => {
+    if (projects.length > 0) {
+      localStorage.setItem('projects', JSON.stringify(projects));
     }
-  };
+  }, [projects]);
 
   const addProject = async (projectData) => {
-    if (!isAuthenticated) throw new Error("Not logged in");
-    const newProject = await createProject(user.sub, projectData);
-    setProjects(prev => [newProject, ...prev]);
+    const newProject = {
+      ...projectData,
+      id: projectData.id || `project-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+    };
+
+    setProjects(prev => [...prev, newProject]);
+    return newProject;
   };
 
-  const editProject = async (projectId, updates) => {
-    await updateProject(projectId, updates);
-    setProjects(prev =>
-      prev.map(p => p.id === projectId ? { ...p, ...updates } : p)
-    );
-  };
-
-  const removeProject = async (projectId) => {
-    await deleteProject(projectId);
+  const deleteProject = (projectId) => {
     setProjects(prev => prev.filter(p => p.id !== projectId));
   };
 
@@ -57,7 +41,6 @@ export const useProjects = () => {
     loading,
     error,
     addProject,
-    editProject,
-    deleteProject: removeProject,
+    deleteProject,
   };
 };

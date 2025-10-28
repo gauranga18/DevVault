@@ -7,6 +7,7 @@ import Passwords from './components/Passwords';
 import Profile from './components/Profile';
 import Login from './components/Login'; 
 import PrivateRoute from './components/PrivateRoute';
+import ProjectEditor from './components/ProjectEditor';
 import EditProjectModal from './components/EditProjectModal';
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
@@ -115,6 +116,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/editor" 
+          element={
+            <ProtectedRoute>
+              <ProjectEditor />
             </ProtectedRoute>
           } 
         />

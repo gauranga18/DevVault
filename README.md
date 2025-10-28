@@ -33,7 +33,7 @@
 
 ### Prerequisites
 - **Java 17+**  
-- **PostgreSQL 15+**  
+- **Firebase Firestore**  
 - **Maven 3.9+**  
 - (Optional) **Docker** for containerized setup  
 
