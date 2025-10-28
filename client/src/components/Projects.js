@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import Navbar from './Navbar';
+import { useProjects } from '../hooks/useProjects';
 
-const Projects = ({ projects = [], addProject, onEdit }) => {
+const Projects = () => {
+  const { projects, loading, error, addProject, editProject } = useProjects();
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -13,21 +15,52 @@ const Projects = ({ projects = [], addProject, onEdit }) => {
     project.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newProject.name.trim()) return;
     
-    // Create a complete project object with ID
-    const projectToAdd = {
-      id: Date.now().toString(), // Generate unique ID
-      name: newProject.name,
-      description: newProject.description
-    };
-    
-    addProject(projectToAdd);
-    setNewProject({ name: '', description: '' });
-    setShowModal(false);
+    try {
+      await addProject({
+        name: newProject.name,
+        description: newProject.description,
+      });
+      
+      setNewProject({ name: '', description: '' });
+      setShowModal(false);
+    } catch (error) {
+      console.error('Failed to create project:', error);
+      // You can show a toast notification here
+    }
   };
+
+  const handleEdit = async (project) => {
+    // Implement your edit logic here
+    // For example, you might want to open an edit modal
+    console.log('Edit project:', project);
+    
+    // Example of updating a project:
+    // try {
+    //   await editProject(project.id, { name: 'Updated Name' });
+    // } catch (error) {
+    //   console.error('Failed to update project:', error);
+    // }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-purple-400">Loading projects...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-red-400">Error: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -97,9 +130,14 @@ const Projects = ({ projects = [], addProject, onEdit }) => {
                 <div>
                   <h2 className="text-purple-400">{project.name}</h2>
                   <p className="text-purple-300">{project.description}</p>
+                  {project.createdAt && (
+                    <p className="text-purple-500 text-sm mt-2">
+                      Created: {project.createdAt.toDate?.().toLocaleDateString()}
+                    </p>
+                  )}
                 </div>
                 <button
-                  onClick={() => onEdit && onEdit(project)}
+                  onClick={() => handleEdit(project)}
                   className="bg-purple-600 px-4 py-2 rounded-md hover:bg-purple-700 transition"
                 >
                   EDIT
